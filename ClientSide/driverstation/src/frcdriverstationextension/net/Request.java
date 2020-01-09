@@ -53,7 +53,7 @@ public class Request
     
     public Object getProperty(int index)
     {
-        return propertyValues[index][index];
+        return propertyValues[index];
     }
 
     public int add(String property) //returns index of element, -1 after request is sent
