@@ -15,7 +15,7 @@ public class Client
         
         try 
         {
-           InetSocketAddress sockadr = new InetSocketAddress(ROBORIO, 5080);
+           InetSocketAddress sockadr = new InetSocketAddress(ROBORIO, 5800);
            socket = new Socket();
            socket.setSoTimeout(5000);
            socket.connect(sockadr);
