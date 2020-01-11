@@ -5,12 +5,14 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import frcdriverstationextension.Config;
+
 public class Client 
 {
     private Socket socket;
     private byte[] buffer;
 
-    private static final String ROBORIO = "roboRIO-7287-frc.local"; // put team number here
+    private static final String ROBORIO = "roboRIO-"+Config.TEAM_NUMBER+"-frc.local"; // put team number here
 
     public Client()
     {

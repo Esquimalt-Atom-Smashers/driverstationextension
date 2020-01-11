@@ -1,8 +1,5 @@
 package frcdriverstationextension;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
 import frcdriverstationextension.net.Client;
 import frcdriverstationextension.net.Request;
 
