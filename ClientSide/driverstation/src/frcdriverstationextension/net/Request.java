@@ -1,10 +1,13 @@
 package frcdriverstationextension.net;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.LinkedList;
 
 public class Request
@@ -21,17 +24,24 @@ public class Request
         ID = (int)(Math.random() * Integer.MAX_VALUE);
     }
 
+    public int getID()
+    {
+        return ID;
+    }
+
 
     public void parseResponse(byte[] buffer) throws MismatchedRequestIDException, ClassNotFoundException, RobotPropertyDoesNotExistException
     {
         int bufPointer = 0;
-        int incomingID = ByteBuffer.allocate(INT_SIZE).put(buffer, 0, INT_SIZE).getInt();
+        
+        int incomingID = ByteBuffer.wrap(buffer, 0, INT_SIZE).getInt(0);
+        System.out.println(incomingID);
         bufPointer += INT_SIZE;
-        if (incomingID != ID) throw new MismatchedRequestIDException();
+        //if (incomingID != ID) throw new MismatchedRequestIDException();
         
         for (int index = 0; index < propertyValues.length; index ++)
         {
-            int messageSize = ByteBuffer.allocate(INT_SIZE).put(buffer, bufPointer, INT_SIZE).getInt();
+            int messageSize = ByteBuffer.wrap(buffer, bufPointer, INT_SIZE).getInt(bufPointer);
             bufPointer += INT_SIZE;
             byte[]  objectBytes = new byte[messageSize];
             System.arraycopy(buffer, bufPointer, objectBytes, 0, messageSize);
@@ -64,8 +74,7 @@ public class Request
 
     public void send(OutputStream stream)
     {
-        String[] reqarr = (String[]) reqlist.toArray();
-        propertyValues = new Object[reqarr.length];
+        propertyValues = new Object[reqlist.size()];
 
         byte[] buf = new byte[1000000];
 
@@ -73,12 +82,17 @@ public class Request
         byte[] idbytes = ByteBuffer.allocate(INT_SIZE).putInt(ID).array();
         System.arraycopy(idbytes, 0, buf, bufPointer, INT_SIZE);
         bufPointer += INT_SIZE;
+        byte[] numBytes = ByteBuffer.allocate(INT_SIZE).putInt(propertyValues.length).array();
+        System.out.println(propertyValues.length);
+        System.arraycopy(numBytes, 0, buf, bufPointer, INT_SIZE);
+        bufPointer += INT_SIZE;
 
-        for (int index = 0; index < reqarr.length; index++) 
+        for (int index = 0; index < reqlist.size(); index++) 
         {
-            byte[] stringBytes = reqarr[index].getBytes(); //convert string to bytes
+            byte[] stringBytes = null;
+            stringBytes = reqlist.get(index).getBytes();
             
-            byte[] size = ByteBuffer.allocate(INT_SIZE).putInt(reqarr.length).array();
+            byte[] size = ByteBuffer.allocate(INT_SIZE).putInt(stringBytes.length).array();
             System.arraycopy(size, 0, buf, bufPointer, INT_SIZE);
             bufPointer += INT_SIZE;
             System.arraycopy(stringBytes, 0, buf, bufPointer, stringBytes.length);

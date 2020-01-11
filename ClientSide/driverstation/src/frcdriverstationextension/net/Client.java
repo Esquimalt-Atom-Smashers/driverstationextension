@@ -39,6 +39,7 @@ public class Client
     {
         try
         {
+            
             if (socket.getInputStream().available() > 0)
             {
                 int read = socket.getInputStream().read(buffer);
