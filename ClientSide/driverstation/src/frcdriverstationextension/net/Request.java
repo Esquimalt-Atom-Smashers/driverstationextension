@@ -1,13 +1,12 @@
 package frcdriverstationextension.net;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+
+
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.LinkedList;
 
 public class Request
@@ -72,7 +71,7 @@ public class Request
         return reqlist.size() - 1;
     }
 
-    public void send(OutputStream stream)
+    public void send()
     {
         propertyValues = new Object[reqlist.size()];
 
@@ -99,12 +98,11 @@ public class Request
             bufPointer += stringBytes.length;
         }
 
-        try
-        {
-            stream.write(buf, 0, bufPointer);
-            stream.flush();
-        }
-        catch (IOException e) {e.printStackTrace();}
+       try
+       {
+            Client.getInstance().sendData(buf, 0, bufPointer);
+       }
+       catch (IOException e) {e.printStackTrace();}
 
     }
 }
