@@ -86,7 +86,9 @@ public class Renderer extends JPanel
         xOffset += g.getFontMetrics().stringWidth(text)+40;
         g.setColor(fg);
         g.drawString("Ping: ", xOffset, yOffset);
-        String pingTime = Long.toString(Client.getPing());
+        Long ping = Client.getPing();
+        if (ping < 0) ping = 0l;
+        String pingTime = Long.toString(ping);
         xOffset += g.getFontMetrics().stringWidth("Ping: ");
         g.drawString(pingTime + "ms", xOffset, yOffset);
         g.translate(0, 120);
@@ -99,10 +101,12 @@ public class Renderer extends JPanel
         int height = this.height - 120;
         g.setColor(Color.white);
         g.setFont(new Font("Arial", Font.PLAIN, 30));
-        g.drawString("Intake State: ", 0,  height-intakeImageHeight+(g.getFontMetrics().getHeight()*4));
+        g.drawString("   Intake State: ", 0,  height-intakeImageHeight+(g.getFontMetrics().getHeight()*4));
         g.setFont(new Font("Arial", Font.BOLD, 30));
-        g.drawString("EMPTY ", 0,  height-intakeImageHeight+(g.getFontMetrics().getHeight()*5));
-        g.drawImage(intakeStates[4], center(intakeStates[0].getWidth()), height-intakeImageHeight, null);
+        g.drawString("   EMPTY ", 0,  height-intakeImageHeight+(g.getFontMetrics().getHeight()*5));
+        g.drawImage(intakeStates[0], center(intakeStates[0].getWidth()), height-intakeImageHeight, null);
+        g.setStroke(new BasicStroke(5));
+        g.drawLine(0, height-intakeImageHeight, width, height-intakeImageHeight);
         
     }
 

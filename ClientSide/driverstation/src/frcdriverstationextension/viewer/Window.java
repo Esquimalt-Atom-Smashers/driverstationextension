@@ -23,7 +23,7 @@ public class Window extends JFrame
         this.width = width;
         this.setSize(width, height);
         this.setTitle(Config.TEAM_NAME + " " + Config.TEAM_NUMBER+ " - " + Config.ROBOT_NAME);
-        String logo = System.getProperty("user.dir") + "\\logo.png";
+        String logo = System.getProperty("user.dir") + "\\images\\logo.png";
         System.out.println(logo);
         this.setIconImage(ImageIO.read(new File(logo)));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

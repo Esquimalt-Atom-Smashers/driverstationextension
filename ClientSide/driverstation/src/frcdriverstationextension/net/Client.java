@@ -56,7 +56,7 @@ public class Client
 
     public void checkAndParse(Request req)
     {
-
+        if (!socket.isConnected()) return;
         try
         {
             
