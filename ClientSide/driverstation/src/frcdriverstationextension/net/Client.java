@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 import frcdriverstationextension.Config;
 
@@ -97,6 +98,24 @@ public class Client
         out.write(buffer, offset, length);
         out.flush();
     }
-    
+
+    public void parseSocketBuffer(byte[] buffer)
+    {
+        int bufPointer = 0;
+        
+        while (bufPointer < buffer.length)
+        {
+            int packetID = ByteBuffer.allocate(4).put(buffer).get(bufPointer);
+            bufPointer += 4;
+            int packetSize = ByteBuffer.allocate(4).put(buffer).get(bufPointer);
+            bufPointer += 4;
+            byte[] packetData = new byte[packetSize];
+            System.arraycopy(buffer, bufPointer, packetData, 0, packetSize);
+            bufPointer += packetSize;
+            IOManager.getInstance().getPacket(packetID).putResponseData(packetData);
+
+        }
+
+    }
 }
     
