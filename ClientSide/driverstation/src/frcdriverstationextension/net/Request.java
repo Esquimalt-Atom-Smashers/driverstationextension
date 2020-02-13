@@ -9,8 +9,11 @@ import java.io.ObjectInputStream;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 
-public class Request
+public class Request implements PacketResponseListener
 {
+
+    private Packet packet;
+
     LinkedList<String> reqlist;
     private static final int INT_SIZE = 4;
     private static final String PARSE_ERROR = "PARSE ERROR";
@@ -105,4 +108,11 @@ public class Request
        catch (IOException e) {e.printStackTrace();}
 
     }
+
+    @Override
+    public void packetResponse() 
+    {
+        byte[] data = packet.getResponseData();
+    }
+    
 }
